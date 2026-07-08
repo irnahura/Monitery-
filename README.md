@@ -125,6 +125,12 @@ SMTP is optional. When it is not configured, notification events are skipped rat
 
 The app is container-friendly, so the simplest production path is to build the backend and frontend images and run them behind a reverse proxy.
 
+### Recommended split
+
+1. Deploy the database first.
+1. Deploy the backend second and point it at the managed database.
+1. Deploy the frontend last and point it at the backend API URL.
+
 ### AWS
 
 Recommended AWS setup:
@@ -134,6 +140,38 @@ Recommended AWS setup:
 3. Use Amazon RDS for PostgreSQL instead of the local Compose database.
 4. Put the frontend behind CloudFront, S3, or a second ECS service depending on whether you want static hosting or a containerized UI.
 5. Terminate TLS with an Application Load Balancer and point your domain DNS to it.
+
+### Backend deployment steps
+
+1. Build the backend image from `backend/`.
+1. Push the image to your container registry.
+1. Create an ECS Fargate service or EC2 container service for the backend.
+1. Set backend environment variables in the service task definition:
+   - `DATABASE_URL`
+   - `JWT_SECRET`
+   - `PORT`
+   - `SMTP_HOST`
+   - `SMTP_PORT`
+   - `SMTP_USER`
+   - `SMTP_PASSWORD`
+   - `SMTP_FROM`
+1. Point `DATABASE_URL` at the managed PostgreSQL instance.
+1. Open the backend service only to the frontend origin and required internal traffic.
+
+### Database deployment steps
+
+1. Create an Amazon RDS for PostgreSQL instance.
+1. Put it in the same region and network boundary as the backend service.
+1. Save the database connection string and use it as `DATABASE_URL`.
+1. Make sure the backend can connect over SSL if your provider requires it.
+1. Back up the database before first production traffic.
+
+### Frontend deployment steps
+
+1. Deploy the `frontend/` directory as a static site.
+1. Set `VITE_API_BASE_URL` to the public backend URL.
+1. Add the frontend domain to the backend CORS allowlist.
+1. Keep `frontend/vercel.json` in the repo so client-side routing falls back to `index.html`.
 
 ### Other options
 
@@ -149,6 +187,16 @@ Recommended AWS setup:
 - Configure SMTP if notifications should be delivered.
 - Lock CORS to the final frontend origin instead of localhost.
 - For Vercel, set `frontend/vercel.json` as the deployment config and keep client-side routing on the SPA fallback.
+
+### Vercel notes
+
+Vercel is a good fit for the `frontend/` app because it is a static React build. Set the production environment variable in the Vercel project settings, then deploy the `frontend/` folder as the project root.
+
+Official references:
+
+- [Vercel environment variables](https://vercel.com/docs/environment-variables)
+- [Vercel deployments](https://vercel.com/docs/deployments)
+- [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html)
 
 ## Design source
 
