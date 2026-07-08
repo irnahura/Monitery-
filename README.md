@@ -46,7 +46,7 @@ Services will be available at:
 - Backend: http://localhost:8080
 - PostgreSQL: localhost:5432
 
-## 🧪 Testing the Monitor (Verification Steps)
+## Testing the Monitor (Verification Steps)
 
 To verify that the uptime monitor correctly detects both "up" and "down" states:
 
