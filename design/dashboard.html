@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pulse Dashboard</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body data-page="dashboard">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-mark" href="index.html">Pulse</a>
+      <nav class="nav-list" aria-label="Primary">
+        <a class="nav-item active" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="add-url.html">Add Monitor</a>
+        <a class="nav-item" href="settings.html">Settings</a>
+        <a class="nav-item" href="login.html">Logout</a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="eyebrow">Cadence</span>
+        <p>Frontend polls every 5s. Backend checks run roughly every 60s.</p>
+      </div>
+    </aside>
+
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <span class="eyebrow">Monitor fleet</span>
+          <h1>Dashboard</h1>
+          <p class="muted-copy">A table-first view built for a few dozen URLs, not hundreds.</p>
+        </div>
+        <div class="header-actions">
+          <a class="button button-secondary" href="settings.html">Settings</a>
+          <a class="button button-primary" href="add-url.html">Add monitor</a>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="card stat-card">
+          <span class="card-label">Active monitors</span>
+          <strong>24</strong>
+          <p>23 responding, 1 degraded.</p>
+        </article>
+        <article class="card stat-card">
+          <span class="card-label">Median response</span>
+          <strong>84ms</strong>
+          <p>Across the latest successful checks.</p>
+        </article>
+        <article class="card stat-card">
+          <span class="card-label">Availability</span>
+          <strong>99.92%</strong>
+          <p>Trailing seven-day fleet average.</p>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Monitors</h2>
+            <p class="muted-copy">Rows link into the retained detail view.</p>
+          </div>
+          <span class="pill pill-neutral">Last refresh 12s ago</span>
+        </div>
+        <div class="monitor-table" role="table" aria-label="Monitors">
+          <div class="table-head" role="row">
+            <span>Name</span>
+            <span>Status</span>
+            <span>Response</span>
+            <span>Last checked</span>
+          </div>
+          <a class="table-row" href="service-detail.html" role="row">
+            <div>
+              <strong>Example</strong>
+              <span>https://example.com</span>
+            </div>
+            <span class="pill pill-up">UP · 200</span>
+            <span class="mono">84ms</span>
+            <span class="mono muted">12s ago</span>
+          </a>
+          <a class="table-row" href="service-detail.html" role="row">
+            <div>
+              <strong>Docs API</strong>
+              <span>https://api.pulse.local/health</span>
+            </div>
+            <span class="pill pill-up">UP · 204</span>
+            <span class="mono">61ms</span>
+            <span class="mono muted">24s ago</span>
+          </a>
+          <a class="table-row" href="service-detail.html" role="row">
+            <div>
+              <strong>Billing webhook</strong>
+              <span>https://billing.pulse.local/webhook</span>
+            </div>
+            <span class="pill pill-down">DOWN</span>
+            <span class="mono">—</span>
+            <span class="mono muted">51s ago</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="split-grid">
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h2>Recent incidents</h2>
+              <p class="muted-copy">Keep the product honest with simple status history.</p>
+            </div>
+          </div>
+          <div class="stack-list">
+            <div class="list-row">
+              <div>
+                <strong>Billing webhook timeout</strong>
+                <span>1 failure across the last two scheduler runs.</span>
+              </div>
+              <span class="mono muted">09:42 UTC</span>
+            </div>
+            <div class="list-row">
+              <div>
+                <strong>Cache API recovered</strong>
+                <span>Returned to 200 after a short 302/timeout chain.</span>
+              </div>
+              <span class="mono muted">08:17 UTC</span>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h2>Quick actions</h2>
+              <p class="muted-copy">Minimal operator shortcuts, no extra tooling panel.</p>
+            </div>
+          </div>
+          <div class="action-group">
+            <a class="button button-secondary" href="add-url.html">Register another URL</a>
+            <a class="button button-secondary" href="empty-state.html">View first-run empty state</a>
+            <a class="button button-secondary" href="settings.html#api">Review API keys</a>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="shared.js"></script>
+</body>
+</html>

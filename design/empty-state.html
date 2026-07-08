@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empty State</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body data-page="empty-state">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-mark" href="index.html">Pulse</a>
+      <nav class="nav-list" aria-label="Primary">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="add-url.html">Add Monitor</a>
+        <a class="nav-item" href="settings.html">Settings</a>
+        <a class="nav-item" href="login.html">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <span class="eyebrow">First-run state</span>
+          <h1>No monitors yet</h1>
+          <p class="muted-copy">The message stays direct and product-facing.</p>
+        </div>
+      </header>
+
+      <section class="card empty-card">
+        <div class="empty-signal" aria-hidden="true"></div>
+        <h2>Add one to start watching its pulse.</h2>
+        <p>
+          The first scheduler pass will append the initial check. After that, the
+          row moves from waiting into either a healthy or down state without a refresh.
+        </p>
+        <div class="button-row center">
+          <a class="button button-primary" href="add-url.html">Add monitor</a>
+          <a class="button button-secondary" href="dashboard.html">Back to dashboard</a>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="shared.js"></script>
+</body>
+</html>

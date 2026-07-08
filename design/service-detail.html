@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Detail</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body data-page="service-detail">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-mark" href="index.html">Pulse</a>
+      <nav class="nav-list" aria-label="Primary">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item" href="add-url.html">Add Monitor</a>
+        <a class="nav-item" href="settings.html">Settings</a>
+        <a class="nav-item" href="login.html">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <span class="eyebrow">Service inspection</span>
+          <h1>Example</h1>
+          <p class="muted-copy">https://example.com</p>
+        </div>
+        <div class="header-actions">
+          <a class="button button-secondary" href="dashboard.html">Back to dashboard</a>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <article class="card stat-card">
+          <span class="card-label">Availability</span>
+          <strong>99.92%</strong>
+          <p>Trailing seven-day uptime.</p>
+        </article>
+        <article class="card stat-card">
+          <span class="card-label">SLA target</span>
+          <strong>99.90%</strong>
+          <p>Current history clears the target.</p>
+        </article>
+        <article class="card stat-card">
+          <span class="card-label">Latest response</span>
+          <strong>84ms</strong>
+          <p>Status 200 · checked 12s ago.</p>
+        </article>
+      </section>
+
+      <section class="split-grid">
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h2>Latest observation</h2>
+              <p class="muted-copy">Joined from the retained `GET /urls` response.</p>
+            </div>
+            <span class="pill pill-up">UP · 200</span>
+          </div>
+          <div class="meta-grid">
+            <div>
+              <span class="card-label">Checked at</span>
+              <strong class="mono-block">2026-07-07 10:14 UTC</strong>
+            </div>
+            <div>
+              <span class="card-label">Response time</span>
+              <strong class="mono-block">84ms</strong>
+            </div>
+            <div>
+              <span class="card-label">Failure rule</span>
+              <strong class="mono-block">5s timeout → DOWN</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h2>Recent note</h2>
+              <p class="muted-copy">The product keeps the explanation short and operational.</p>
+            </div>
+          </div>
+          <p class="body-copy">
+            This service has stayed inside SLA over the last seven days. One 302 was
+            followed by a normal 200 response, so no manual intervention was required.
+          </p>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Recent health check history</h2>
+            <p class="muted-copy">Simple table, no heavy analytics shell.</p>
+          </div>
+        </div>
+        <div class="history-table" role="table" aria-label="Recent health checks">
+          <div class="table-head" role="row">
+            <span>Checked at</span>
+            <span>Status</span>
+            <span>Response</span>
+          </div>
+          <div class="table-row static-row" role="row">
+            <div><strong>2026-07-07 10:14 UTC</strong><span>Latest scheduler pass</span></div>
+            <span class="pill pill-up">200</span>
+            <span class="mono">84ms</span>
+          </div>
+          <div class="table-row static-row" role="row">
+            <div><strong>2026-07-07 10:13 UTC</strong><span>Redirect followed cleanly</span></div>
+            <span class="pill pill-up">204</span>
+            <span class="mono">61ms</span>
+          </div>
+          <div class="table-row static-row" role="row">
+            <div><strong>2026-07-07 10:12 UTC</strong><span>Healthy response</span></div>
+            <span class="pill pill-up">200</span>
+            <span class="mono">78ms</span>
+          </div>
+          <div class="table-row static-row" role="row">
+            <div><strong>2026-07-07 10:11 UTC</strong><span>Redirected before success</span></div>
+            <span class="pill pill-neutral">302</span>
+            <span class="mono">92ms</span>
+          </div>
+          <div class="table-row static-row" role="row">
+            <div><strong>2026-07-07 10:10 UTC</strong><span>Healthy response</span></div>
+            <span class="pill pill-up">200</span>
+            <span class="mono">71ms</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pulse Wireframe Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f5ebe0;
+      --surface: #edede9;
+      --tape: #e3d5ca;
+      --ink: #2d241c;
+      --muted: rgba(45, 36, 28, 0.62);
+      --line: rgba(45, 36, 28, 0.58);
+      --shadow: rgba(45, 36, 28, 0.1);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Architects Daughter", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(var(--surface) 1px, transparent 1px),
+        linear-gradient(90deg, var(--surface) 1px, transparent 1px),
+        var(--paper);
+      background-size: 24px 24px, 24px 24px, auto;
+      padding: 28px;
+    }
+
+    .sheet {
+      max-width: 1380px;
+      margin: 0 auto;
+      border: 3px solid var(--line);
+      border-radius: 28px;
+      background: rgba(245, 235, 224, 0.9);
+      box-shadow: 0 22px 50px var(--shadow);
+      padding: 28px 28px 34px;
+      transform: rotate(-0.4deg);
+      position: relative;
+    }
+
+    .sheet::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1.5px dashed rgba(45, 36, 28, 0.28);
+      border-radius: 22px;
+      pointer-events: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font: 700 clamp(2.6rem, 4.8vw, 4.8rem) "Caveat", Georgia, serif;
+      letter-spacing: 0.01em;
+    }
+
+    .tag,
+    .note,
+    .meta,
+    .chip {
+      font-family: "Courier New", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+    }
+
+    .tag {
+      display: inline-block;
+      border: 2px dashed var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(237, 237, 233, 0.9);
+      transform: rotate(2deg);
+      margin-top: 8px;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .meta {
+      text-align: right;
+      color: var(--muted);
+      margin-top: 18px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      margin: 6px 0 26px;
+    }
+
+    .tab {
+      position: relative;
+      padding: 8px 2px;
+      font-size: 0.95rem;
+    }
+
+    .tab::before {
+      content: "☐";
+      margin-right: 8px;
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      inset: 4px -10px;
+      background: rgba(227, 213, 202, 0.88);
+      transform: rotate(-1.5deg);
+      z-index: -1;
+      border-radius: 9px;
+    }
+
+    .launcher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 230px;
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          rgba(45, 36, 28, 0.03) 0 8px,
+          transparent 8px 16px
+        ),
+        rgba(237, 237, 233, 0.8);
+      border: 3px solid rgba(45, 36, 28, 0.6);
+      border-radius: var(--radius);
+      padding: 18px;
+      text-decoration: none;
+      color: inherit;
+      transform: rotate(-0.6deg);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      box-shadow: 0 12px 24px rgba(45, 36, 28, 0.08);
+    }
+
+    .card:nth-child(even) { transform: rotate(0.5deg); }
+    .card:hover { transform: translateY(-4px) rotate(0deg); }
+
+    .thumb {
+      flex: 1;
+      border: 2px dashed rgba(45, 36, 28, 0.38);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      background: rgba(245, 235, 224, 0.62);
+    }
+
+    .mini-row,
+    .mini-line,
+    .mini-chart {
+      border-radius: 999px;
+      border: 2px solid rgba(45, 36, 28, 0.5);
+    }
+
+    .mini-row { height: 18px; width: 86%; }
+    .mini-line { height: 14px; width: 58%; }
+    .mini-chart {
+      height: 64px;
+      border-radius: 14px;
+      border-style: dashed;
+      position: relative;
+    }
+
+    .mini-chart::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-bottom: 2px solid rgba(45, 36, 28, 0.5);
+      border-left: 2px solid rgba(45, 36, 28, 0.5);
+      clip-path: polygon(0 100%, 14% 44%, 30% 62%, 50% 18%, 72% 36%, 100% 0, 100% 100%);
+      background: repeating-linear-gradient(
+        135deg,
+        transparent 0 10px,
+        rgba(45, 36, 28, 0.08) 10px 12px
+      );
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .note {
+      position: absolute;
+      right: 36px;
+      bottom: -10px;
+      width: 190px;
+      padding: 14px 16px;
+      background: rgba(227, 213, 202, 0.94);
+      border: 2px solid rgba(45, 36, 28, 0.5);
+      border-radius: 8px;
+      transform: rotate(-4deg);
+      box-shadow: 0 16px 30px rgba(45, 36, 28, 0.12);
+    }
+
+    .note::before {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 56px;
+      width: 68px;
+      height: 22px;
+      background: rgba(245, 235, 224, 0.88);
+      border: 1px solid rgba(45, 36, 28, 0.25);
+      transform: rotate(6deg);
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 14px; }
+      .sheet { padding: 18px 18px 64px; }
+      header { flex-direction: column; }
+      .meta { text-align: left; margin-top: 0; }
+      .note { position: static; width: auto; margin-top: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header data-od-id="header">
+      <div>
+        <h1>Pulse MVP wireframe kit</h1>
+        <div class="tag">Wireframe v0.1</div>
+        <p class="subtitle">
+          Minimal uptime monitoring screens translated from the design doc into a
+          warm paper-and-pencil system: one launcher, one dashboard, one add flow,
+          one empty state, one service history view.
+        </p>
+      </div>
+      <div class="meta">07 Jul 2026<br />desktop web<br />lo-fi / implementation-ready</div>
+    </header>
+
+    <nav class="tabs" data-od-id="tabs">
+      <div class="tab active">01 · launcher · organized</div>
+      <div class="tab">02 · dashboard · heartbeat</div>
+      <div class="tab">03 · add flow · capture</div>
+      <div class="tab">04 · detail · history</div>
+      <div class="tab">05 · empty · waiting</div>
+    </nav>
+
+    <section class="launcher-grid" data-od-id="screens">
+      <a class="card" href="dashboard.html">
+        <div class="chip">screen 01</div>
+        <h2>Dashboard</h2>
+        <p>Live URL rows, heartbeat traces, status pills, response time, and last-checked meta.</p>
+        <div class="thumb" aria-hidden="true">
+          <div class="mini-row"></div>
+          <div class="mini-line"></div>
+          <div class="mini-chart"></div>
+        </div>
+      </a>
+
+      <a class="card" href="add-url.html">
+        <div class="chip">screen 02</div>
+        <h2>Add URL</h2>
+        <p>Name + URL capture, lightweight guidance, and a focused single-action entry flow.</p>
+        <div class="thumb" aria-hidden="true">
+          <div class="mini-row" style="width: 72%;"></div>
+          <div class="mini-row" style="width: 100%;"></div>
+          <div class="mini-row" style="width: 64%;"></div>
+        </div>
+      </a>
+
+      <a class="card" href="service-detail.html">
+        <div class="chip">screen 03</div>
+        <h2>Service detail</h2>
+        <p>Check history, latest observation, recent failures, and a sketched trend view for one URL.</p>
+        <div class="thumb" aria-hidden="true">
+          <div class="mini-chart"></div>
+          <div class="mini-row" style="width: 76%;"></div>
+          <div class="mini-line" style="width: 90%;"></div>
+        </div>
+      </a>
+
+      <a class="card" href="empty-state.html">
+        <div class="chip">screen 04</div>
+        <h2>Empty state</h2>
+        <p>First-run experience with the next step written from the operator’s point of view.</p>
+        <div class="thumb" aria-hidden="true">
+          <div class="mini-chart" style="height: 92px;"></div>
+          <div class="mini-line" style="width: 48%;"></div>
+        </div>
+      </a>
+    </section>
+
+    <aside class="note" data-od-id="sticky-note">
+      build note:<br />
+      keep the pulse line as the one expressive move. everything else stays quiet.
+    </aside>
+  </main>
+</body>
+</html>

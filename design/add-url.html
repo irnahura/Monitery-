@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Monitor</title>
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body data-page="add-monitor">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand-mark" href="index.html">Pulse</a>
+      <nav class="nav-list" aria-label="Primary">
+        <a class="nav-item" href="dashboard.html">Dashboard</a>
+        <a class="nav-item active" href="add-url.html">Add Monitor</a>
+        <a class="nav-item" href="settings.html">Settings</a>
+        <a class="nav-item" href="login.html">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="page">
+      <header class="page-header">
+        <div>
+          <span class="eyebrow">Create monitor</span>
+          <h1>Add a URL</h1>
+          <p class="muted-copy">The flow stays short: name, URL, validate, return.</p>
+        </div>
+      </header>
+
+      <div class="form-layout">
+        <section class="card">
+          <form id="monitor-form" class="form-stack" novalidate>
+            <div class="field">
+              <label for="monitor-name">Name</label>
+              <input id="monitor-name" name="name" type="text" placeholder="Example (up)" />
+            </div>
+            <div class="field">
+              <label for="monitor-url">URL</label>
+              <input id="monitor-url" name="url" type="url" placeholder="https://example.com" />
+            </div>
+            <div id="monitor-message" class="message" aria-live="polite"></div>
+            <div class="button-row">
+              <a class="button button-secondary" href="dashboard.html">Cancel</a>
+              <button class="button button-primary" type="submit">Add monitor</button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="card detail-side">
+          <div class="card-header">
+            <div>
+              <h2>What happens next</h2>
+              <p class="muted-copy">This mirrors the design doc and expansion plan.</p>
+            </div>
+          </div>
+          <div class="stack-list">
+            <div class="list-row">
+              <div>
+                <strong>First check queues automatically</strong>
+                <span>The next scheduler pass inserts the first health row.</span>
+              </div>
+            </div>
+            <div class="list-row">
+              <div>
+                <strong>Failures still create history</strong>
+                <span>Down checks show `—` for response time instead of fake numbers.</span>
+              </div>
+            </div>
+            <div class="list-row">
+              <div>
+                <strong>Detail view stays simple</strong>
+                <span>Availability, SLA, and health history remain table-first.</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <script src="shared.js"></script>
+</body>
+</html>
