@@ -140,6 +140,7 @@ Recommended AWS setup:
 - Render or Railway: deploy the backend and managed Postgres as separate services, then deploy the frontend as a static site or container.
 - Fly.io: run the backend as an app, attach a Postgres instance, and deploy the frontend as a separate static app or container.
 - A single VPS: use Docker Compose, a reverse proxy such as Caddy or Nginx, and your own TLS certificates.
+- Vercel: deploy the `frontend/` directory as a static React app, set `VITE_API_BASE_URL` to the deployed backend URL, and add the frontend origin to the backend CORS allowlist.
 
 ### Production checklist
 
@@ -147,6 +148,7 @@ Recommended AWS setup:
 - Rotate `JWT_SECRET` before first public deployment.
 - Configure SMTP if notifications should be delivered.
 - Lock CORS to the final frontend origin instead of localhost.
+- For Vercel, set `frontend/vercel.json` as the deployment config and keep client-side routing on the SPA fallback.
 
 ## Design source
 
