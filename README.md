@@ -30,17 +30,64 @@ frontend/  React UI, pages, shared components, demo data, utility helpers
 design/    Open Design reference material used for the UI direction
 ```
 
-## Run with Docker
+## 🚀 Quick Start (1-Line Setup)
 
 ```bash
 docker compose up --build
 ```
 
-Services:
+This single command will:
+- Start PostgreSQL database
+- Build and run the Go backend API
+- Build and run the React frontend
 
+Services will be available at:
 - Frontend: http://localhost:5173
 - Backend: http://localhost:8080
 - PostgreSQL: localhost:5432
+
+## 🧪 Testing the Monitor (Verification Steps)
+
+To verify that the uptime monitor correctly detects both "up" and "down" states:
+
+1. **Start the application**: Run `docker compose up --build`
+
+2. **Register an account**: 
+   - Navigate to http://localhost:5173
+   - Click "Register" and create a new account
+   - Login with your credentials
+
+3. **Add a working URL** (should show as "UP"):
+   - Click "Add Monitor" or the "+" button
+   - Enter: `https://example.com`
+   - Set check interval (e.g., 60 seconds)
+   - Click "Save"
+   - Wait 1-2 minutes and verify the monitor shows:
+     - Status: ✅ UP
+     - Response time: ~100-500ms
+     - Latest check timestamp
+
+4. **Add a broken URL** (should show as "DOWN"):
+   - Click "Add Monitor" again
+   - Enter: `https://this-url-definitely-does-not-exist-12345.com`
+   - Set check interval (e.g., 60 seconds)
+   - Click "Save"
+   - Wait 1-2 minutes and verify the monitor shows:
+     - Status: ❌ DOWN
+     - Error or timeout message
+     - Latest check timestamp
+
+5. **Verify the data**:
+   - Check the dashboard to see both monitors
+   - View availability percentages
+   - Click on each monitor to see detailed history
+   - Confirm response times are logged for the working URL
+   - Confirm error states are logged for the broken URL
+
+**Expected Results:**
+- `example.com` should consistently show UP with response times
+- The non-existent URL should show DOWN with error messages
+- All checks should be logged with timestamps in the history
 
 ## Local development
 
