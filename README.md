@@ -1,6 +1,6 @@
 # Montiery
 
-🚀 **Live Demo**: [https://assign-nine-delta.vercel.app](https://assign-nine-delta.vercel.app)
+**Live Demo**: [https://assign-nine-delta.vercel.app](https://assign-nine-delta.vercel.app)
 
 Montiery is a small uptime monitoring MVP. It focuses on the core product surface only: authentication, user-owned URL monitors, scheduled health checks, API keys, rate limiting, and email notifications.
 
@@ -30,7 +30,7 @@ frontend/  React UI, pages, shared components, demo data, utility helpers
 design/    Open Design reference material used for the UI direction
 ```
 
-## 🚀 Quick Start (1-Line Setup)
+## Quick Start (1-Line Setup)
 
 ```bash
 docker compose up --build

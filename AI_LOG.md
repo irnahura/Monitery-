@@ -1,14 +1,22 @@
-# AI Collaboration Log
+# AI_LOG.md
 
-## 🤖 The AI Tech Stack
+Built this with AI doing most of the typing, me doing most of the deciding. Kept prompts below mostly verbatim — cleaned up typos, nothing else.
 
-**Primary AI Assistant**: Kiro (Claude Sonnet 4.5)
-**Development Environment**: Kiro AI-powered development environment
-**Model**: Claude Sonnet 4.5 by Anthropic
+## Tech Stack
 
-## 📝 The Prompts that Shipped It
+- Go + Gin + GORM (backend)
+- PostgreSQL
+- React + Vite + TypeScript (frontend)
+- Docker Compose
+- ChatGPT (GPT-5.5) — planning/architecture side
+- OpenAI Codex — actual implementation
 
-### Initial Project Setup Prompt
+Started from Peekaping as a reference point rather than from scratch — closest thing I found to what this needed without dragging in enterprise baggage.
+
+---
+
+## Getting from spec to something buildable
+
 ```
 Read the assignment specification and build a complete uptime monitoring MVP with:
 - Go backend with Gin framework, GORM, PostgreSQL
@@ -22,7 +30,14 @@ Read the assignment specification and build a complete uptime monitoring MVP wit
 Follow the Open Design wireframes in the design/ folder
 ```
 
-### Backend Framework Generation
+Before this, I'd asked it separately to just strip the assignment down to an MVP and tell me what's actually load-bearing vs. nice-to-have. Backend, frontend, scheduler, persistence, docker, docs — everything else waited until it was actually needed.
+
+Also had it go compare a few open-source uptime monitors first (readability and package structure over stars) — that's where Peekaping came from.
+
+---
+
+## Backend
+
 ```
 Create a Go backend API with:
 - Gin web framework
@@ -36,7 +51,14 @@ Create a Go backend API with:
 Structure it in internal/ packages: api, auth, monitor, scheduler, database, models, repository
 ```
 
-### Frontend UI Generation
+Got JWT auth, monitor CRUD, the scheduler, health history, availability/SLA calc, email notifications, and API keys out of this and the follow-ups. Handler → service → repository → db, established early so nothing later turned into a cross-package mess.
+
+Most of the back-and-forth after the initial generation wasn't new features, it was pulling coupling apart before it calcified.
+
+---
+
+## Frontend
+
 ```
 Build a React + Vite + TypeScript frontend that:
 - Has login/register screens
@@ -49,7 +71,12 @@ Build a React + Vite + TypeScript frontend that:
 - Handle JWT token storage and authentication
 ```
 
-### Docker Compose Setup
+Told it to treat the wireframes as the actual design system, not a vibe to riff on. Stayed deliberately shallow on visuals — effort went into state management, routing, and API integration instead.
+
+---
+
+## Docker
+
 ```
 Create a docker-compose.yml that orchestrates:
 - PostgreSQL 17 Alpine container with health checks
@@ -60,44 +87,30 @@ Create a docker-compose.yml that orchestrates:
 - Port mappings: 5432 for postgres, 8080 for backend, 5173 for frontend
 ```
 
-## 🔧 The Course Corrections
+One shot, worked mostly as-is.
 
-### Issue 1: CORS Configuration
-**Problem**: Initially, the AI generated a backend with no CORS middleware, causing the frontend to fail with CORS policy errors when making API requests from http://localhost:5173 to http://localhost:8080.
+---
 
-**AI's Mistake**: The Gin router was set up without CORS headers, blocking cross-origin requests.
+## Where it actually broke
 
-**Resolution Prompt**: 
+**CORS.** First backend had none. Frontend on 5173 calling 8080, blocked immediately, predictable.
 ```
 The frontend is getting CORS errors when calling the backend API. 
 Add CORS middleware to the Gin router that allows requests from http://localhost:5173
 ```
+`gin-contrib/cors`, fixed in one pass.
 
-**Fix**: AI added `github.com/gin-contrib/cors` middleware with proper AllowOrigins, AllowMethods, and AllowCredentials configuration.
-
-### Issue 2: Database Connection String Format
-**Problem**: The AI initially used an incorrect PostgreSQL connection string format that didn't include the sslmode parameter, causing connection failures in the Docker environment.
-
-**AI's Hallucination**: Generated `DATABASE_URL` as `postgres://user:pass@host:port/db` without the `?sslmode=disable` suffix needed for local development.
-
-**Resolution**: Manually corrected the connection string in docker-compose.yml to:
+**Connection string.** Generated `postgres://user:pass@host:port/db` — no `sslmode`. Docker Postgres rejected it outright. Not really a hallucination so much as an assumption that didn't hold locally. Fixed manually:
 ```
 postgres://peekaping:peekaping@postgres:5432/peekaping?sslmode=disable
 ```
 
-### Issue 3: Frontend Proxy Configuration
-**Problem**: The Vite dev server wasn't properly proxying API requests to the backend, resulting in 404 errors for all `/auth`, `/monitors`, and `/apikeys` endpoints.
-
-**AI's Initial Code**: Generated a basic Vite config without proxy settings, requiring the frontend to make direct requests to `http://localhost:8080` which created CORS complications.
-
-**Resolution Prompt**:
+**Vite proxy.** `/auth`, `/monitors`, `/apikeys` all 404ing. Vite config had no proxy set up, frontend was hitting itself instead of the backend.
 ```
 The frontend is getting 404s when calling API endpoints. 
 Configure Vite's dev server proxy to forward /auth, /monitors, and /apikeys requests to http://backend:8080
 ```
-
-**Fix**: AI updated vite.config.ts with proper proxy configuration:
-```typescript
+```ts
 server: {
   port: 5173,
   proxy: {
@@ -108,20 +121,17 @@ server: {
 }
 ```
 
-### Issue 4: JWT Token Expiration Handling
-**Problem**: The AI generated JWT authentication logic but didn't implement proper token expiration validation on the backend, and the frontend didn't handle expired token scenarios gracefully.
+**Token expiry.** Nothing checked it. Backend happily accepted stale tokens, frontend had no idea what to do with a 401 either. Added expiry checks in the auth middleware and a redirect-to-login on the frontend when a token's dead.
 
-**Course Correction**: Added explicit token expiration checks in the auth middleware and frontend redirect logic to the login page when tokens are invalid or expired.
+**Scheduler scope creep.** At one point it proposed worker pools, retry queues, multiple notification providers, distributed scheduling — all reasonable, none of it for a few dozen URLs. Told it to optimize for something readable instead of something that scales to a load this project doesn't have. Ended up as a plain polling loop with explicit state transitions, which is honestly all it needed to be.
 
-## 📊 Development Process Summary
+**SQLite → Postgres.** Started on SQLite since it needed zero setup. Swapped once it was clear the deployment story and the multi-container requirement wanted an actual service. Repository contracts didn't move, only the infra underneath them.
 
-1. **Architecture Design** (AI-assisted): Started with the assignment requirements, AI proposed the Go + React + PostgreSQL stack
-2. **Backend Scaffolding** (95% AI-generated): Gin router, GORM models, JWT auth, scheduler, all generated via prompts
-3. **Frontend Components** (90% AI-generated): React pages, routing, API integration, all based on design wireframes
-4. **Docker Orchestration** (100% AI-generated): Complete docker-compose.yml with multi-stage builds
-5. **Debugging & Fixes** (Human + AI collaboration): CORS, proxy configs, connection strings refined through iterative prompting
-6. **Deployment** (AI-assisted): Vercel deployment configuration and execution
+**Frontend state blob.** Everything — routing, fetching, render logic — was piling into one component early on. Split into pages / components / service layer / shared types / hooks once it got annoying to read.
 
-**Total Development Time**: ~6-8 hours (would have taken 20+ hours without AI assistance)
+---
 
-**AI Contribution**: ~85-90% of the codebase generated, human provided architecture decisions, debugging, and refinement prompts
+## Roughly
+
+- ~6–8 hours end to end, would've been a couple days doing this by hand
+- Most of the codebase came out of prompts first, then got picked apart — CORS, connection strings, and the proxy config are the parts I'd flag as "AI got this wrong in a way you'd only catch by actually running it," everything else was more architecture judgment calls than bugs
